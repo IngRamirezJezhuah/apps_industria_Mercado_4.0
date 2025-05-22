@@ -4,6 +4,7 @@ import NodeCache from 'node-cache';
 import dayjs from 'dayjs';
 import { cache } from '../utills/cache';
 import { generateAcessToken } from '../utills/token';
+import { validateToken } from '../utills/validateToken';
 
 export const loginMethod = (req: Request, res: Response) => {
     const name: string = "DJ";
@@ -53,6 +54,10 @@ export const getTimeToken = (req: Request, res : Response) =>{
     })
 }
 
-const ValidarToken = (req:Request, res: Response) =>{
-    
-}
+export const protectedRoute = (req: Request, res: Response) => {
+    return res.status(200).json({
+        message: "Listo,ya esta confirmada creo... ദ്ദി(ᵔᗜᵔ)",
+        userid: req.body
+    });
+};
+
