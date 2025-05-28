@@ -9,8 +9,8 @@ export interface Iuser extends Document{
     createDate:Date,
     deleteDate: Date,
     role: string,
-    Firstname: string,
-    Lastname: string,
+    firstName: string,
+    lastName: string,
 }
 
 const userSchema= new Schema<Iuser>({
@@ -39,11 +39,11 @@ const userSchema= new Schema<Iuser>({
         type: String,
         required: true,
     },
-    Firstname:{
+    firstName:{
         type: String,
         required: true,
     },
-    Lastname:{
+    lastName:{
         type: String,
         required: true,        
     }

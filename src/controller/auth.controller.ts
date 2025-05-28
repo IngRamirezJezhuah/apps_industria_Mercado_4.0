@@ -112,3 +112,20 @@ export const getUserByName = async (req: Request, res: Response) => {
         return res.status(500).json({ message: 'Error al buscar el usuario', error });
     }
 };
+
+export const saveUser = async (req:Request, res:Response) => {
+    const { firstName, lastName, username, email, password, role } = req.body;
+
+    const newUser = new User({
+        firstName,
+        lastName,
+        username,
+        password,
+        role,
+        email
+    });
+
+    const user = await newUser.save();
+
+    return res.json({ user });
+}

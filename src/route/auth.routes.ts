@@ -1,6 +1,7 @@
 import express, { Router } from "express";
-import { getTimeToken, loginMethod, protectedRoute, updateToken , getAllUsers, getUserByName  } from "../controller/auth.controller";
+import { getTimeToken,saveUser, loginMethod, protectedRoute, updateToken , getAllUsers, getUserByName  } from "../controller/auth.controller";
 import { validateToken } from "../utills/validateToken";
+
 
 const router = Router();
 
@@ -12,6 +13,6 @@ router.put('/update/:userId', updateToken);
 
 router.get('/users', getAllUsers);
 router.get('/users/:username', getUserByName); 
-
+router.post('/users', saveUser);
 
 export default router;
