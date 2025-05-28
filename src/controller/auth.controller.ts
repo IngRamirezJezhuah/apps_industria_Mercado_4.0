@@ -4,6 +4,7 @@ import NodeCache from 'node-cache';
 import dayjs from 'dayjs';
 import { cache } from '../utills/cache';
 import { generateAcessToken } from '../utills/token';
+import { User } from '../models/UserModels';
 
 
 export const loginMethod = (req: Request, res: Response) => {
@@ -80,4 +81,34 @@ console.log(ttl)
     res.json({message: "update"})
 }
 
-    
+/*
+export const getAllUsers = async (req: Request, res:Response)=>{
+    const { userEmail } =req.query;
+    const userList = await User.find();
+    const userByEmail = await User.find({email: userEmail});
+    console.log(userByEmail)
+    return res.json({userList})
+}*/
+export const getAllUsers = async (req: Request, res: Response) => {
+    try {
+        const users = await User.find();
+        return res.status(200).json(users);
+    } catch (error) {
+        return res.status(500).json({ message: 'Error al obtener los usuarios', error });
+    }
+};
+
+
+export const getUserByName = async (req: Request, res: Response) => {
+    const { username } = req.params;
+
+    try {
+        const user = await User.findOne({ username: username });
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+        return res.status(200).json(user);
+    } catch (error) {
+        return res.status(500).json({ message: 'Error al buscar el usuario', error });
+    }
+};
