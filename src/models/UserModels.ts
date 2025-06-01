@@ -24,6 +24,10 @@ const userSchema= new Schema<Iuser>({
         required: true,
         unique: true,
     },
+    email:{
+        type: String,
+        required: true,
+    },
     status:{
         type: Boolean,
         default: true,

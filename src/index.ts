@@ -4,6 +4,7 @@ import authRoutes from './route/auth.routes';
 import connectDB from './config/bd';
 import userRoutes from './route/auth.routes'; 
 
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 

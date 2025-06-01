@@ -7,7 +7,11 @@ import { generateAcessToken } from '../utills/token';
 import { User } from '../models/UserModels';
 
 
-export const loginMethod = (req: Request, res: Response) => {
+
+
+
+export const loginMethod = (req: Request,res: Response) => {
+
     const name: string = "DJ";
     const age: number = 30;
 
@@ -128,4 +132,45 @@ export const saveUser = async (req:Request, res:Response) => {
     const user = await newUser.save();
 
     return res.json({ user });
+}
+
+
+export const updateUser = async (req: Request, res: Response) => {
+    const { userId } = req.params;
+    const { username, email, password, role, firstName, lastName } = req.body;
+    
+    const user = await User.findById(userId);
+    if (!user){
+        return res.status(404).json({ message: "User not found"});
+    }
+
+    const userEmail = await User.findOne({ email });
+    if(userEmail&&userEmail.id!==user.id){
+        return res.status(426).json({ message: "El correo ya existe" })
+    }
+
+    user.password = password != null ? (password) : user.password;
+    user.email = email != null ? email : user.email;
+    user.role=role != null ? role : user.role;
+    user.firstName=firstName != null ? firstName : user.firstName;
+    user.lastName=lastName != null ? lastName : user.lastName;
+    user.username=username != null ? username : user.username;
+
+    const updateUser = await user.save();
+    return res.json({ updateUser });
+}
+
+export const deleteUser=async(req: Request,res: Response) => {
+    const { userId } = req.params;
+
+    const user = await User.findById(userId);
+    if (!user){
+        return res.status(404).json({ message: "User not found"});
+    }
+
+    user.status=false;
+    user.deleteDate= new Date;
+
+    const deleteUser = await user.save();
+    return res.json({ deleteUser });
 }
