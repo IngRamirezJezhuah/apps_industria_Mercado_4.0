@@ -31,6 +31,7 @@ const userSchema= new Schema<Iuser>({
     status:{
         type: Boolean,
         default: true,
+        index: true,
     },
     createDate:{
         type: Date,
@@ -40,6 +41,8 @@ const userSchema= new Schema<Iuser>({
         type: Date,
     },
     role:{
+        //type: Schema.Types.ObjectId,
+        //ref: 'Rol',
         type: String,
         required: true,
     },
@@ -54,5 +57,7 @@ const userSchema= new Schema<Iuser>({
 });
 
 export const User = model<Iuser>('User', userSchema, 'user')
-
+//especificar datos als csas <>
+//modelo, lo agarra, luego define de qu vslor
+// nombre esquema y collecion
 //tarea aparecer la conexion a mongo

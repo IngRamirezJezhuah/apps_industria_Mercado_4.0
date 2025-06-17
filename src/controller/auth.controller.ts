@@ -5,14 +5,15 @@ import dayjs from 'dayjs';
 import { cache } from '../utills/cache';
 import { generateAcessToken } from '../utills/token';
 import { User } from '../models/UserModels';
+import bcrypt from 'bcrypt';
+import { userInfo } from 'os';
 
 
 
 
 
-export const loginMethod = (req: Request,res: Response) => {
-
-    const name: string = "DJ";
+export const loginMethod = async (req: Request,res: Response) => {
+/*    const name: string = "DJ";
     const age: number = 30;
 
     const { username, password } = req.body;
@@ -35,6 +36,31 @@ export const loginMethod = (req: Request,res: Response) => {
 
     return res.status(200).json({
         message: "Login successful",
+        accessToken
+    });*/
+    //encontre la alternativa pero tengo miedo de que pete, asi que lo dejo
+    //ademas es mas facil para mongo usr ese formato
+    const { username, password } = req.body;
+
+    const user = await User.findOne({ username, status: true });
+
+    if (!user) {
+        return res.status(401).json({ message: "Usuario no encontrado o inactivo" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+        return res.status(401).json({ message: "Contraseña incorrecta" });
+    }
+
+    const userId = user.id;
+    const accessToken = generateAcessToken(userId);
+
+    cache.set(userId, accessToken, 60 * 15);
+
+    return res.status(200).json({
+        message: "Login exitoso",
         accessToken
     });
 };
@@ -85,17 +111,10 @@ console.log(ttl)
     res.json({message: "update"})
 }
 
-/*
-export const getAllUsers = async (req: Request, res:Response)=>{
-    const { userEmail } =req.query;
-    const userList = await User.find();
-    const userByEmail = await User.find({email: userEmail});
-    console.log(userByEmail)
-    return res.json({userList})
-}*/
 export const getAllUsers = async (req: Request, res: Response) => {
     try {
-        const users = await User.find();
+        //const users = await User.find(); creo que debia de haberlo habilitado
+        const users = await User.find({status:true});
         return res.status(200).json(users);
     } catch (error) {
         return res.status(500).json({ message: 'Error al obtener los usuarios', error });
@@ -119,18 +138,23 @@ export const getUserByName = async (req: Request, res: Response) => {
 
 export const saveUser = async (req:Request, res:Response) => {
     const { firstName, lastName, username, email, password, role } = req.body;
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+        return res.status(400).json({ message: "El correo ya está registrado" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10); // 10 = salt rounds
 
     const newUser = new User({
         firstName,
         lastName,
         username,
-        password,
+        password: hashedPassword,
         role,
         email
     });
 
     const user = await newUser.save();
-
     return res.json({ user });
 }
 
@@ -149,7 +173,10 @@ export const updateUser = async (req: Request, res: Response) => {
         return res.status(426).json({ message: "El correo ya existe" })
     }
 
-    user.password = password != null ? (password) : user.password;
+    //user.password = password != null ? (password) : user.password;
+    if (password != null) {
+    user.password = await bcrypt.hash(password, 10);
+    }
     user.email = email != null ? email : user.email;
     user.role=role != null ? role : user.role;
     user.firstName=firstName != null ? firstName : user.firstName;
@@ -167,7 +194,7 @@ export const deleteUser=async(req: Request,res: Response) => {
     if (!user){
         return res.status(404).json({ message: "User not found"});
     }
-
+    //esto hace que se de de baja logica
     user.status=false;
     user.deleteDate= new Date;
 
