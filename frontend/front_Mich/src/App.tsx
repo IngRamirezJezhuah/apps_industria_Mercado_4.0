@@ -2,7 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import { userForm } from "./modules/users/userForm.tsx";
+
 /**la logica de programacion va de aqui alla, por que es de llamar los archivos no hay que quitar el modo estricto de react, eso no se quita por que se peta
  * Aqui va el cascaron de nuestra app
  * en app se agregan el cascaron
@@ -11,7 +11,13 @@ import { userForm } from "./modules/users/userForm.tsx";
  */
 function App() {
   const [count, setCount] = useState(0)
-
+  
+  /*const menuSchema = new Schema({
+  label: String,
+  path: String,
+  icon: String,
+  roles: [{ type: Schema.Types.ObjectId, ref: 'Role' }],
+  });*/
   return (
     <>
       <div>
@@ -38,7 +44,7 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
       {/*<userForm />*/}
-      <userForm />
+      
     </>
   )
 }
