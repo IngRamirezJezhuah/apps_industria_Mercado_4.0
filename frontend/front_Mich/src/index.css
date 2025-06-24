@@ -1,1 +1,72 @@
 @import "tailwindcss";
+
+form {
+    display: grid;
+    gap: 1rem;
+    max-width: 28rem;
+    margin-left: 50vh;
+    padding: 1.5rem;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+}
+
+form div {
+    display: grid;
+    grid-template-rows: auto auto; /* Label y luego input */
+    gap: 0.5rem;
+    overflow: hidden;
+}
+
+form label {
+    z-index: 1;
+    font-size: 0.875rem;
+    font-weight: bold;
+    color: #4a4a4a;
+    text-align: left;
+}
+
+form input {
+    z-index: 1;
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    box-sizing: border-box;
+}
+form input:focus {
+    border-color: #DA0C15;
+    outline: none;
+    border-width: 2px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+form button {
+
+    z-index: 1;
+    padding: 0.75rem;
+    background-color: #1a6991;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #ffffff;
+    color: #DA0C15;
+    font-weight: bold;
+    border: #DA0C15 1px solid;
+    transition: background-color 0.3s, color 0.3s, border 0.3s;
+}
+
+form a {
+    text-align: center;
+    color: #3b82f6;
+    text-decoration: none;
+}
+
+form a:hover {
+    text-decoration: underline;
+}
